@@ -152,7 +152,7 @@ app.get('/get-user', async (req, res) => {
 
     try {
 
-        const user = await User.findOne({ _id: userId })
+        const user = await User.findById(userId)
 
         console.log(user);
         if (user) {
@@ -161,7 +161,7 @@ app.get('/get-user', async (req, res) => {
 
         } else {
 
-            res.status(401).send({ success: false, message : 'user not found' });
+            res.status(401).send({ success: false, message: 'user not found' });
 
         }
 
@@ -178,10 +178,55 @@ app.get('/get-user', async (req, res) => {
 
 
 
+//// edit an user's details /// 
+
+
+app.put('/edit-user/', async (req, res) => {
+    const userId = req.query.userId;
+
+    try {
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).send({ success: false, message: 'User not found' });
+        }
+
+        else {
+            user.firstName = req.body.firstName || user.firstName;
+            user.lastName = req.body.lastName || user.lastName;
+            user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+            const updatedUser = await user.save();
+            res.status(200).send({ success: true, user: updatedUser });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 
+// delete user 
 
+app.delete('/delete-user/', async (req, res) => {
+    const userId = req.query.userId; 
+
+    try {
+        
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).send({ success: false, message: 'User not found' });
+        }
+
+        res.status(200).send({ success: true, user: deletedUser });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 
