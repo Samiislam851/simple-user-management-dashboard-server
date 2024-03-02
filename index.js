@@ -211,10 +211,10 @@ app.put('/edit-user/', async (req, res) => {
 // delete user 
 
 app.delete('/delete-user/', async (req, res) => {
-    const userId = req.query.userId; 
+    const userId = req.query.userId;
 
     try {
-        
+
         const deletedUser = await User.findByIdAndDelete(userId);
 
         if (!deletedUser) {
@@ -227,6 +227,8 @@ app.delete('/delete-user/', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 
 
