@@ -11,7 +11,8 @@ This is a simple REST API built with Express.js for managing user accounts. It p
     
 ````
 4. Set up a MongoDB database and update the connection string in ````config/db.js````.
-5. Create a `.env` file and specify the environment variables such as ````MONGO_URI````.
+5. Create a `.env` file and specify the environment variables ````MONGO_URI````.
+```` JWT_SECRET_KEY````
 6. Start the server using 
  ````
 npm start
