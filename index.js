@@ -13,6 +13,7 @@ const generateToken = require('./config/generateToken');
 const verifyJWT = require('./middleware/VerifyJWT');
 const http = require('http');
 const path = require('path');
+const AdminUser = require('./models/AdminUserModel');
 
 
 
@@ -35,14 +36,14 @@ const server = app.listen(process.env.PORT || 3000, () => {
 app.post('/saveUser', async (req, res) => {
     // console.log(req.body)
 
-    const user = new User(req.body)
+    const user = new AdminUser(req.body)
 
 
     try {
 
         const userEmail = user.email
 
-        const response = await User.findOne({ email: userEmail })
+        const response = await AdminUser.findOne({ email: userEmail })
 
         if (!response) {
 
@@ -73,14 +74,13 @@ app.post('/saveUser', async (req, res) => {
 
 app.post('/login', async (req, res) => {
 
-    const user = new User(req.body)
-    // console.log('the user ', user);
+    const user = new AdminUser(req.body)
 
     try {
 
         const userEmail = user.email
 
-        const response = await User.findOne({ email: userEmail })
+        const response = await AdminUser.findOne({ email: userEmail })
         const token = generateToken(response)
         // console.log('token', token);
         if (!response) {
@@ -105,6 +105,16 @@ app.post('/login', async (req, res) => {
 
 app.post('/create-user', async (req, res) => {
     const user = new User(req.body);
+    const { email, firstName, lastName, phoneNumber } = req.body;
+
+    // Check if any required field is missing, empty, or null
+    if (!email || email.trim() === '' ||
+        !firstName || firstName.trim() === '' ||
+        !lastName || lastName.trim() === '' ||
+        !phoneNumber || isNaN(phoneNumber) || phoneNumber.toString().includes(' ')) {
+        console.log(req.body);
+        return res.status(400).json({ success: false, message: 'Missing or empty required fields' });
+    }
 
     try {
 
@@ -126,7 +136,10 @@ app.post('/create-user', async (req, res) => {
 
 ////////////////////////  fetch all the users  ////////////
 
-app.get('/get-users', async (req, res) => {
+app.get('/get-users',verifyJWT, async (req, res) => {
+
+   
+
     try {
 
         const users = await User.find()
@@ -147,7 +160,7 @@ app.get('/get-users', async (req, res) => {
 ////////////////// get a single user ////////////////
 
 
-app.get('/get-user', async (req, res) => {
+app.get('/get-user',verifyJWT, async (req, res) => {
     const userId = req.query.userId
 
     try {
@@ -157,7 +170,7 @@ app.get('/get-user', async (req, res) => {
         console.log(user);
         if (user) {
 
-            res.status(200).send(user );
+            res.status(200).send(user);
 
         } else {
 
@@ -181,7 +194,7 @@ app.get('/get-user', async (req, res) => {
 //// edit an user's details /// 
 
 
-app.put('/edit-user/', async (req, res) => {
+app.put('/edit-user/',verifyJWT, async (req, res) => {
     const userId = req.query.userId;
 
     try {
@@ -210,9 +223,9 @@ app.put('/edit-user/', async (req, res) => {
 //// block User /// 
 
 
-app.put('/block-user/', async (req, res) => {
+app.put('/block-user/',verifyJWT, async (req, res) => {
     const userId = req.body.userId;
-console.log(userId);
+    console.log(userId);
     try {
 
         const user = await User.findById(userId);
@@ -236,7 +249,7 @@ console.log(userId);
 //// unblock User /// 
 
 
-app.put('/unblock-user/', async (req, res) => {
+app.put('/unblock-user/',verifyJWT, async (req, res) => {
     const userId = req.body.userId;
 
     try {
@@ -264,7 +277,7 @@ app.put('/unblock-user/', async (req, res) => {
 
 // delete user 
 
-app.delete('/delete-user/', async (req, res) => {
+app.delete('/delete-user/',verifyJWT, async (req, res) => {
     const userId = req.query.userId;
 
     try {
