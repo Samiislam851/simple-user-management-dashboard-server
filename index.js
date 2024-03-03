@@ -302,24 +302,3 @@ app.delete('/delete-user/', verifyJWT, async (req, res) => {
 
 
 
-
-
-
-
-//------------------------  Deployment ----------------------
-// const __dirname2 = path.resolve()
-
-// if (true) {
-//     // console.log( path.join(__dirname2, "/client/dist"));
-//     app.use(express.static(path.join(__dirname2, "/client/dist")))
-//     app.get('*', (req, res) => {
-//         res.sendFile(path.join(__dirname2, "client", "dist", "index.html"))
-//     })
-// } else {
-//     app.get('/', (req, res) => {
-
-//         console.log(process.env.NODE_ENV);
-//         res.send("API is running successfully")
-//     })
-// }
-// ------------------------- Deployment -----------------------
