@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express()
 const db = require('./config/db');
 
-const User = require('./models/userModel');
+const User = require('./models/UserModel');
 
 
 const generateToken = require('./config/generateToken');
