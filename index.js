@@ -51,7 +51,7 @@ app.post('/saveUser', async (req, res) => {
                 const response = await user.save()
                 const token = generateToken(response);
 
-                // console.log(token);
+               
 
                 /// return a token from here also
                 res.status(200).json({ success: true, message: 'saved', user: response, token })
