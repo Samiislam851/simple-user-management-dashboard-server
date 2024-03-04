@@ -136,7 +136,7 @@ app.post('/create-user', async (req, res) => {
 
 ////////////////////////  fetch all the users  ////////////
 
-app.get('/get-users', verifyJWT, async (req, res) => {
+app.get('/get-users',  async (req, res) => {
 
 
 
@@ -160,7 +160,7 @@ app.get('/get-users', verifyJWT, async (req, res) => {
 ////////////////// get a single user ////////////////
 
 
-app.get('/get-user', verifyJWT, async (req, res) => {
+app.get('/get-user',  async (req, res) => {
     const userId = req.query.userId
 
     try {
@@ -194,7 +194,7 @@ app.get('/get-user', verifyJWT, async (req, res) => {
 //// edit an user's details /// 
 
 
-app.put('/edit-user/', verifyJWT, async (req, res) => {
+app.put('/edit-user/',  async (req, res) => {
     const userId = req.query.userId;
 
     try {
@@ -223,7 +223,7 @@ app.put('/edit-user/', verifyJWT, async (req, res) => {
 //// block User /// 
 
 
-app.put('/block-user/', verifyJWT, async (req, res) => {
+app.put('/block-user/',  async (req, res) => {
     const userId = req.body.userId;
     console.log(userId);
     try {
@@ -249,7 +249,7 @@ app.put('/block-user/', verifyJWT, async (req, res) => {
 //// unblock User /// 
 
 
-app.put('/unblock-user/', verifyJWT, async (req, res) => {
+app.put('/unblock-user/',  async (req, res) => {
     const userId = req.body.userId;
 
     try {
@@ -280,7 +280,7 @@ res.status(200).send({message: 'hello I am working fine'})
 
 // delete user 
 
-app.delete('/delete-user/', verifyJWT, async (req, res) => {
+app.delete('/delete-user/',  async (req, res) => {
     const userId = req.query.userId;
 
     try {
